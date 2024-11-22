@@ -176,32 +176,15 @@ for frames in tqdm(range(len(en_ph))):
     # plt.subplot(1,3,3)
     # plt.imshow(watershed_tf, cmap='jet')
     # plt.title('Watershed',fontsize = 15)
-
-# path_im_gen = 'C:\\Belgium test Project\\New Dataset\\Segmentation\\'
-# path_seq_vid = 'C:\\Belgium test Project\\New Dataset\\Seq_Vid\\'
-# temp_fig = os.listdir(path_im_gen)
-# vid_name = path_seq_vid + 'Scaled_Phase.mp4'
-# img = []
-# for t in range(len(path_im_gen)):
-#     img.append(cv2.imread(path_im_gen + temp_fig[t],-1))
     
-# height,width,layers = img[0].shape
-# video = cv2.VideoWriter(vid_name,-1,3,(width,height))
-
-# for j in range(len(img)):
-#     video.write(img[j])
-
-# cv2.destroyAllWindows()
-# video.release()
-    
-    # props = measure.regionprops_table(watershed_tf,im_in,properties = ['label','area',
-    #                                                                     'Centroid','axis_major_length',
-    #                                                                     'axis_minor_length','eccentricity',
-    #                                                                     'bbox','intensity_mean',
-    #                                                                     'intensity_max','intensity_min','extent'])
+    props = measure.regionprops_table(watershed_tf,im_in,properties = ['label','area',
+                                                                        'Centroid','axis_major_length',
+                                                                        'axis_minor_length','eccentricity',
+                                                                        'bbox','intensity_mean',
+                                                                        'intensity_max','intensity_min','extent'])
     
     
-    # pd_props = pd.DataFrame(props)
+    pd_props = pd.DataFrame(props)
     
     # if frames < 10:
     #     pre_save = '00'
@@ -483,6 +466,7 @@ for rp in tqdm(range(len(rekeep_cons_mito_path))):
         # plt.savefig(path_temp_fig + 'con_img_' + pre + str(v) + '.png')
         # plt.close()
         
+    # # Uncomment this section in case you want to generate the videoof the detected events
     # temp_fig = os.listdir(path_temp_fig)
     # if rp < 10:
     #     pre_vid = '00'
@@ -667,253 +651,253 @@ for rp in range(len(detected_frame)):
 en_ph_props = os.listdir(path_phase_props)
 en = os.listdir(path_save_properties)
 
-# paired_position = []
+paired_position = []
 
-# for rp in range(len(detected_frame)): 
-#     pos = detected_frame[rp]
-#     cell = np_rekeep_cons_mito_path[rp][pos-1]
-#     cell2 = np_rekeep_cons_mito_path[rp][pos]
+for rp in range(len(detected_frame)): 
+    pos = detected_frame[rp]
+    cell = np_rekeep_cons_mito_path[rp][pos-1]
+    cell2 = np_rekeep_cons_mito_path[rp][pos]
     
-#     props_c1 = pd.read_csv(path_save_properties + en[pos-1])
-#     props_c2 = pd.read_csv(path_save_properties + en[pos])
+    props_c1 = pd.read_csv(path_save_properties + en[pos-1])
+    props_c2 = pd.read_csv(path_save_properties + en[pos])
     
-#     props_ph_c1 = pd.read_csv(path_phase_props + en_ph_props[pos-1])
-#     props_ph_c2 = pd.read_csv(path_phase_props + en_ph_props[pos])
+    props_ph_c1 = pd.read_csv(path_phase_props + en_ph_props[pos-1])
+    props_ph_c2 = pd.read_csv(path_phase_props + en_ph_props[pos])
     
-#     c10i = props_c1['Centroid-0'][cell-1]
-#     c11i = props_c1['Centroid-1'][cell-1]
+    c10i = props_c1['Centroid-0'][cell-1]
+    c11i = props_c1['Centroid-1'][cell-1]
     
-#     c20i = props_c2['Centroid-0'][cell2-1]
-#     c21i = props_c2['Centroid-1'][cell2-1]
+    c20i = props_c2['Centroid-0'][cell2-1]
+    c21i = props_c2['Centroid-1'][cell2-1]
     
-#     # Mother cells
+    # Mother cells
     
-#     c10p = np.asarray(props_ph_c1['Centroid-0'])
-#     c11p = np.asanyarray(props_ph_c1['Centroid-1'])
+    c10p = np.asarray(props_ph_c1['Centroid-0'])
+    c11p = np.asanyarray(props_ph_c1['Centroid-1'])
     
-#     eu_c1ix = np.power(c10p - c10i,2)
-#     eu_c1iy = np.power(c11p - c11i,2)
-#     eu_c1 = np.sqrt(eu_c1ix + eu_c1iy)
-#     ind_m_ph = np.argmin(eu_c1)
+    eu_c1ix = np.power(c10p - c10i,2)
+    eu_c1iy = np.power(c11p - c11i,2)
+    eu_c1 = np.sqrt(eu_c1ix + eu_c1iy)
+    ind_m_ph = np.argmin(eu_c1)
     
-#     # Daughter cells
+    # Daughter cells
     
-#     c20p = np.asarray(props_ph_c2['Centroid-0'])
-#     c21p = np.asanyarray(props_ph_c2['Centroid-1'])
+    c20p = np.asarray(props_ph_c2['Centroid-0'])
+    c21p = np.asanyarray(props_ph_c2['Centroid-1'])
     
-#     eu_c2ix = np.power(c20p - c20i,2)
-#     eu_c2iy = np.power(c21p - c21i,2)
-#     eu_c2 = np.sqrt(eu_c2ix + eu_c2iy)
-#     ind_d_ph = np.argmin(eu_c2)
+    eu_c2ix = np.power(c20p - c20i,2)
+    eu_c2iy = np.power(c21p - c21i,2)
+    eu_c2 = np.sqrt(eu_c2ix + eu_c2iy)
+    ind_d_ph = np.argmin(eu_c2)
     
-#     paired_position.append([[cell,ind_m_ph],[cell2,ind_d_ph]])
-    
-
-# # Features extraction
-
-# column_features = ['Closed Euclidean distance from neighbor','Area of mother cell','Major axis of mother cell','Minor axis of mother cell',
-#                     'Circularity of mother cell', 'Mean intensity of mother cell',
-#                     'Max intensity of mother cell','Min intensity of mother cell',
-#                     'Area of daughter cell','Major axis of daughter cell','Minor axis of daughter cell',
-#                     'Circularity of daughter cell', 'Mean intensity of daughter cell',
-#                     'Max intensity of daughter cell','Min intensity of daughter cell',
-#                     'Area of mother cell (phase)','Major axis of mother cell (phase)','Minor axis of mother cell (phase)',
-#                     'Circularity of mother cell (phase)', 'Mean intensity of mother cell (phase)',
-#                     'Max intensity of mother cell (phase)','Min intensity of mother cell (phase)',
-#                     'Area of daughter cell (phase)','Major axis of daughter cell (phase)','Minor axis of daughter cell (phase)',
-#                     'Circularity of daughter cell (phase)', 'Mean intensity of daughter cell (phase)',
-#                     'Max intensity of daughter cell (phase)','Min intensity of daughter cell (phase)',
-#                     'Area ratio', 'Major axis ratio', 'Minor axis ratio', 'Circularity ratio','Mean intensity ratio',
-#                     'Max intensity ratio','Min intensity ratio',
-#                     'Area ratio (phase)', 'Major axis ratio (phase)', 'Minor axis ratio (phase)', 'Circularity ratio (phase)','Mean intensity ratio (phase)',
-#                     'Max intensity ratio (phase)','Min intensity ratio (phase)',
-#                     'Area diff', 'Major axis diff', 'Minor axis diff', 'Circularity diff','Mean intensity diff',
-#                     'Max intensity diff','Min intensity diff',
-#                     'Area diff (phase)', 'Major axis diff (phase)', 'Minor axis diff (phase)', 'Circularity diff (phase)','Mean intensity diff (phase)',
-#                     'Max intensity diff (phase)','Min intensity diff (phase)',
-#                     'Minimum of Euclidean distance','Maximum of Euclidean distance','Variance of Euclidean distance',
-#                     'Mean of Euclidean distance','Range of Euclidean distance',
-#                     'Minimum of daughter Euclidean distance','Maximum of daughter Euclidean distance','Variance of daughter Euclidean distance',
-#                     'Mean of daughter Euclidean distance','Range of daughter Euclidean distance',
-#                     'Range of circularity','Range of major axis','Range of minor axis','Range of area',
-#                     'Range of extent','Range of mean intensity','Range of max intensity',
-#                     'SD of circularity','SD of major axis','SD of minor axis','SD of area',
-#                     'SD of extent','SD of mean intensity','SD of max intensity','Path length']
-
-# features_list = []
-# for r in range(len(paired_position)):
-#     pos = detected_frame[r]
-#     dist_cls = detected_cls_dc[r]
-#     props_m_i = pd.read_csv(path_save_properties + en[pos-1])
-#     props_d_i = pd.read_csv(path_save_properties + en[pos])
-    
-#     props_m_ph = pd.read_csv(path_phase_props + en_ph_props[pos-1])
-#     props_d_ph = pd.read_csv(path_phase_props + en_ph_props[pos])
-    
-#     cell_m_i = paired_position[r][0][0]
-#     cell_d_i = paired_position[r][1][0]
-    
-#     cell_m_ph = paired_position[r][0][1]
-#     cell_d_ph = paired_position[r][1][1]
-    
-#     area_m = props_m_i['area'][cell_m_i - 1]
-#     maj_m = props_m_i['axis_major_length'][cell_m_i - 1]
-#     mi_m = props_m_i['axis_minor_length'][cell_m_i - 1]
-#     cir_m = props_m_i['eccentricity'][cell_m_i - 1]
-#     mean_int_m = props_m_i['intensity_mean'][cell_m_i - 1]
-#     max_int_m = props_m_i['intensity_max'][cell_m_i - 1]
-#     min_int_m = props_m_i['intensity_min'][cell_m_i - 1]
-    
-#     area_d = props_d_i['area'][cell_d_i - 1]
-#     maj_d = props_d_i['axis_major_length'][cell_d_i - 1]
-#     mi_d = props_d_i['axis_minor_length'][cell_d_i - 1]
-#     cir_d = props_d_i['eccentricity'][cell_d_i - 1]
-#     mean_int_d = props_d_i['intensity_mean'][cell_d_i - 1]
-#     max_int_d = props_d_i['intensity_max'][cell_d_i - 1]
-#     min_int_d = props_d_i['intensity_min'][cell_d_i - 1]
-    
-#     area_m_ph = props_m_ph['area'][cell_m_ph - 1]
-#     maj_m_ph = props_m_ph['axis_major_length'][cell_m_ph - 1]
-#     mi_m_ph = props_m_ph['axis_minor_length'][cell_m_ph - 1]
-#     cir_m_ph = props_m_ph['eccentricity'][cell_m_ph - 1]
-#     mean_int_m_ph = props_m_ph['intensity_mean'][cell_m_ph - 1]
-#     max_int_m_ph = props_m_ph['intensity_max'][cell_m_ph - 1]
-#     min_int_m_ph = props_m_ph['intensity_min'][cell_m_ph - 1]
-    
-#     area_d_ph = props_d_ph['area'][cell_d_ph - 1]
-#     maj_d_ph = props_d_ph['axis_major_length'][cell_d_ph - 1]
-#     mi_d_ph = props_d_ph['axis_minor_length'][cell_d_ph - 1]
-#     cir_d_ph = props_d_ph['eccentricity'][cell_d_ph - 1]
-#     mean_int_d_ph = props_d_ph['intensity_mean'][cell_d_ph - 1]
-#     max_int_d_ph = props_d_ph['intensity_max'][cell_d_ph - 1]
-#     min_int_d_ph = props_d_ph['intensity_min'][cell_d_ph - 1]
-    
-#     # Ratio features
-    
-#     area_ratio = area_m/area_d
-#     maj_ratio = maj_m/maj_d
-#     minor_ratio = mi_m/mi_d
-#     cir_ratio = cir_m/cir_d
-#     mint_ratio = mean_int_m/mean_int_d
-#     max_ratio = max_int_m/max_int_d
-#     min_ratio = min_int_m/min_int_d
-    
-#     area_ratio_ph = area_m_ph/area_d_ph
-#     maj_ratio_ph = maj_m_ph/maj_d_ph
-#     minor_ratio_ph = mi_m_ph/mi_d_ph
-#     cir_ratio_ph = cir_m_ph/cir_d_ph
-#     mint_ratio_ph = mean_int_m_ph/mean_int_d_ph
-#     max_ratio_ph = max_int_m_ph/max_int_d_ph
-#     min_ratio_ph = min_int_m_ph/min_int_d_ph
-    
-#     # Diff features
-    
-#     area_diff = area_m - area_d
-#     maj_diff = maj_m - maj_d
-#     minor_diff = mi_m - mi_d
-#     cir_diff = cir_m - cir_d
-#     mint_diff = mean_int_m - mean_int_d
-#     max_diff = max_int_m - max_int_d
-#     min_diff = min_int_m - min_int_d
-    
-#     area_diff_ph = area_m_ph - area_d_ph
-#     maj_diff_ph = maj_m_ph - maj_d_ph
-#     minor_diff_ph = mi_m_ph - mi_d_ph
-#     cir_diff_ph = cir_m_ph - cir_d_ph
-#     mint_diff_ph = mean_int_m_ph - mean_int_d_ph
-#     max_diff_ph = max_int_m_ph - max_int_d_ph
-#     min_diff_ph = min_int_m_ph - min_int_d_ph
-    
-#     # Movement features
-    
-#     dist = np_rekeep_cons_mito_eu[r,:]
-#     dist = dist[dist != 0]
-#     mn_dist = np.min(dist)
-#     mx_dist = np.max(dist)
-#     var_dist = np.var(dist)
-#     mu_dist = np.mean(dist)
-#     range_dist = mx_dist - mn_dist
-    
-#     cls_dist = np_rekeep_cons_mito_cls[r,:]
-#     cls_dist = cls_dist[cls_dist != 0]
-#     mn_cls_dist = np.min(cls_dist)
-#     mx_cls_dist = np.max(cls_dist)
-#     var_cls_dist = np.var(cls_dist)
-#     mu_cls_dist = np.mean(cls_dist)
-#     range_cls_dist = mx_cls_dist - mn_cls_dist
-    
-#     features_list.append([dist_cls,area_m,maj_m,mi_m,cir_m,mean_int_m,max_int_m,min_int_m,
-#                       area_d,maj_d,mi_d,cir_d,mean_int_d,max_int_d,min_int_d,
-#                       area_m_ph,maj_m_ph,mi_m_ph,cir_m_ph,mean_int_m_ph,max_int_m_ph,min_int_m_ph,
-#                       area_d_ph,maj_d_ph,mi_d_ph,cir_d_ph,mean_int_d_ph,max_int_d_ph,min_int_d_ph,
-#                       area_ratio,maj_ratio,minor_ratio,cir_ratio,mint_ratio,max_ratio,min_ratio,
-#                       area_ratio_ph,maj_ratio_ph,minor_ratio_ph,cir_ratio_ph,mint_ratio_ph,max_ratio_ph,min_ratio_ph,
-#                       area_diff,maj_diff,minor_diff,cir_diff,mint_diff,max_diff,min_diff,
-#                       area_diff_ph,maj_diff_ph,minor_diff_ph,cir_diff_ph,mint_diff_ph,max_diff_ph,min_diff_ph,
-#                       mn_dist,mx_dist,var_dist,mu_dist,range_dist,
-#                       mn_cls_dist,mx_cls_dist,var_cls_dist,mu_cls_dist,range_cls_dist])
+    paired_position.append([[cell,ind_m_ph],[cell2,ind_d_ph]])
     
 
-# arr_feature_list = np.asarray(features_list)
+# Features extraction
 
-# arr_features = np.concatenate((arr_feature_list,arr_phe_features),axis = 1)
-# features = pd.DataFrame(data = arr_features,columns = column_features)
-# path_save_features = 'C:\\Belgium test Project\\New Dataset\\features_py\\'
-# # path_save_features = 'C:\\Belgium test Project\\New Dataset2\\Features\\'
-# features.to_csv(path_save_features + 'features.csv', index=None)
+column_features = ['Closed Euclidean distance from neighbor','Area of mother cell','Major axis of mother cell','Minor axis of mother cell',
+                    'Circularity of mother cell', 'Mean intensity of mother cell',
+                    'Max intensity of mother cell','Min intensity of mother cell',
+                    'Area of daughter cell','Major axis of daughter cell','Minor axis of daughter cell',
+                    'Circularity of daughter cell', 'Mean intensity of daughter cell',
+                    'Max intensity of daughter cell','Min intensity of daughter cell',
+                    'Area of mother cell (phase)','Major axis of mother cell (phase)','Minor axis of mother cell (phase)',
+                    'Circularity of mother cell (phase)', 'Mean intensity of mother cell (phase)',
+                    'Max intensity of mother cell (phase)','Min intensity of mother cell (phase)',
+                    'Area of daughter cell (phase)','Major axis of daughter cell (phase)','Minor axis of daughter cell (phase)',
+                    'Circularity of daughter cell (phase)', 'Mean intensity of daughter cell (phase)',
+                    'Max intensity of daughter cell (phase)','Min intensity of daughter cell (phase)',
+                    'Area ratio', 'Major axis ratio', 'Minor axis ratio', 'Circularity ratio','Mean intensity ratio',
+                    'Max intensity ratio','Min intensity ratio',
+                    'Area ratio (phase)', 'Major axis ratio (phase)', 'Minor axis ratio (phase)', 'Circularity ratio (phase)','Mean intensity ratio (phase)',
+                    'Max intensity ratio (phase)','Min intensity ratio (phase)',
+                    'Area diff', 'Major axis diff', 'Minor axis diff', 'Circularity diff','Mean intensity diff',
+                    'Max intensity diff','Min intensity diff',
+                    'Area diff (phase)', 'Major axis diff (phase)', 'Minor axis diff (phase)', 'Circularity diff (phase)','Mean intensity diff (phase)',
+                    'Max intensity diff (phase)','Min intensity diff (phase)',
+                    'Minimum of Euclidean distance','Maximum of Euclidean distance','Variance of Euclidean distance',
+                    'Mean of Euclidean distance','Range of Euclidean distance',
+                    'Minimum of daughter Euclidean distance','Maximum of daughter Euclidean distance','Variance of daughter Euclidean distance',
+                    'Mean of daughter Euclidean distance','Range of daughter Euclidean distance',
+                    'Range of circularity','Range of major axis','Range of minor axis','Range of area',
+                    'Range of extent','Range of mean intensity','Range of max intensity',
+                    'SD of circularity','SD of major axis','SD of minor axis','SD of area',
+                    'SD of extent','SD of mean intensity','SD of max intensity','Path length']
+
+features_list = []
+for r in range(len(paired_position)):
+    pos = detected_frame[r]
+    dist_cls = detected_cls_dc[r]
+    props_m_i = pd.read_csv(path_save_properties + en[pos-1])
+    props_d_i = pd.read_csv(path_save_properties + en[pos])
     
+    props_m_ph = pd.read_csv(path_phase_props + en_ph_props[pos-1])
+    props_d_ph = pd.read_csv(path_phase_props + en_ph_props[pos])
+    
+    cell_m_i = paired_position[r][0][0]
+    cell_d_i = paired_position[r][1][0]
+    
+    cell_m_ph = paired_position[r][0][1]
+    cell_d_ph = paired_position[r][1][1]
+    
+    area_m = props_m_i['area'][cell_m_i - 1]
+    maj_m = props_m_i['axis_major_length'][cell_m_i - 1]
+    mi_m = props_m_i['axis_minor_length'][cell_m_i - 1]
+    cir_m = props_m_i['eccentricity'][cell_m_i - 1]
+    mean_int_m = props_m_i['intensity_mean'][cell_m_i - 1]
+    max_int_m = props_m_i['intensity_max'][cell_m_i - 1]
+    min_int_m = props_m_i['intensity_min'][cell_m_i - 1]
+    
+    area_d = props_d_i['area'][cell_d_i - 1]
+    maj_d = props_d_i['axis_major_length'][cell_d_i - 1]
+    mi_d = props_d_i['axis_minor_length'][cell_d_i - 1]
+    cir_d = props_d_i['eccentricity'][cell_d_i - 1]
+    mean_int_d = props_d_i['intensity_mean'][cell_d_i - 1]
+    max_int_d = props_d_i['intensity_max'][cell_d_i - 1]
+    min_int_d = props_d_i['intensity_min'][cell_d_i - 1]
+    
+    area_m_ph = props_m_ph['area'][cell_m_ph - 1]
+    maj_m_ph = props_m_ph['axis_major_length'][cell_m_ph - 1]
+    mi_m_ph = props_m_ph['axis_minor_length'][cell_m_ph - 1]
+    cir_m_ph = props_m_ph['eccentricity'][cell_m_ph - 1]
+    mean_int_m_ph = props_m_ph['intensity_mean'][cell_m_ph - 1]
+    max_int_m_ph = props_m_ph['intensity_max'][cell_m_ph - 1]
+    min_int_m_ph = props_m_ph['intensity_min'][cell_m_ph - 1]
+    
+    area_d_ph = props_d_ph['area'][cell_d_ph - 1]
+    maj_d_ph = props_d_ph['axis_major_length'][cell_d_ph - 1]
+    mi_d_ph = props_d_ph['axis_minor_length'][cell_d_ph - 1]
+    cir_d_ph = props_d_ph['eccentricity'][cell_d_ph - 1]
+    mean_int_d_ph = props_d_ph['intensity_mean'][cell_d_ph - 1]
+    max_int_d_ph = props_d_ph['intensity_max'][cell_d_ph - 1]
+    min_int_d_ph = props_d_ph['intensity_min'][cell_d_ph - 1]
+    
+    # Ratio features
+    
+    area_ratio = area_m/area_d
+    maj_ratio = maj_m/maj_d
+    minor_ratio = mi_m/mi_d
+    cir_ratio = cir_m/cir_d
+    mint_ratio = mean_int_m/mean_int_d
+    max_ratio = max_int_m/max_int_d
+    min_ratio = min_int_m/min_int_d
+    
+    area_ratio_ph = area_m_ph/area_d_ph
+    maj_ratio_ph = maj_m_ph/maj_d_ph
+    minor_ratio_ph = mi_m_ph/mi_d_ph
+    cir_ratio_ph = cir_m_ph/cir_d_ph
+    mint_ratio_ph = mean_int_m_ph/mean_int_d_ph
+    max_ratio_ph = max_int_m_ph/max_int_d_ph
+    min_ratio_ph = min_int_m_ph/min_int_d_ph
+    
+    # Diff features
+    
+    area_diff = area_m - area_d
+    maj_diff = maj_m - maj_d
+    minor_diff = mi_m - mi_d
+    cir_diff = cir_m - cir_d
+    mint_diff = mean_int_m - mean_int_d
+    max_diff = max_int_m - max_int_d
+    min_diff = min_int_m - min_int_d
+    
+    area_diff_ph = area_m_ph - area_d_ph
+    maj_diff_ph = maj_m_ph - maj_d_ph
+    minor_diff_ph = mi_m_ph - mi_d_ph
+    cir_diff_ph = cir_m_ph - cir_d_ph
+    mint_diff_ph = mean_int_m_ph - mean_int_d_ph
+    max_diff_ph = max_int_m_ph - max_int_d_ph
+    min_diff_ph = min_int_m_ph - min_int_d_ph
+    
+    # Movement features
+    
+    dist = np_rekeep_cons_mito_eu[r,:]
+    dist = dist[dist != 0]
+    mn_dist = np.min(dist)
+    mx_dist = np.max(dist)
+    var_dist = np.var(dist)
+    mu_dist = np.mean(dist)
+    range_dist = mx_dist - mn_dist
+    
+    cls_dist = np_rekeep_cons_mito_cls[r,:]
+    cls_dist = cls_dist[cls_dist != 0]
+    mn_cls_dist = np.min(cls_dist)
+    mx_cls_dist = np.max(cls_dist)
+    var_cls_dist = np.var(cls_dist)
+    mu_cls_dist = np.mean(cls_dist)
+    range_cls_dist = mx_cls_dist - mn_cls_dist
+    
+    features_list.append([dist_cls,area_m,maj_m,mi_m,cir_m,mean_int_m,max_int_m,min_int_m,
+                      area_d,maj_d,mi_d,cir_d,mean_int_d,max_int_d,min_int_d,
+                      area_m_ph,maj_m_ph,mi_m_ph,cir_m_ph,mean_int_m_ph,max_int_m_ph,min_int_m_ph,
+                      area_d_ph,maj_d_ph,mi_d_ph,cir_d_ph,mean_int_d_ph,max_int_d_ph,min_int_d_ph,
+                      area_ratio,maj_ratio,minor_ratio,cir_ratio,mint_ratio,max_ratio,min_ratio,
+                      area_ratio_ph,maj_ratio_ph,minor_ratio_ph,cir_ratio_ph,mint_ratio_ph,max_ratio_ph,min_ratio_ph,
+                      area_diff,maj_diff,minor_diff,cir_diff,mint_diff,max_diff,min_diff,
+                      area_diff_ph,maj_diff_ph,minor_diff_ph,cir_diff_ph,mint_diff_ph,max_diff_ph,min_diff_ph,
+                      mn_dist,mx_dist,var_dist,mu_dist,range_dist,
+                      mn_cls_dist,mx_cls_dist,var_cls_dist,mu_cls_dist,range_cls_dist])
     
 
-# rp = 70
-# view_path = rekeep_cons_mito_path[rp]
-# pos_view = pos_range[rp]
-# path_length = pos_view[1] - pos_view[0] + 1
-# frame_range = list(range(pos_view[0],pos_view[1]+1))
-# cap_view_path = view_path[view_path != 0]
-# phe_area_ecc = []
-# phe_mi = []
-# phe_maj = []
-# phe_area = []
-# phe_extent = []
-# phe_mu_int = []
-# phe_max_int = []
-# for v in range(len(cap_view_path)):
-#     lab_im = cv2.imread(path_save_lab + en_lab[frame_range[v]], -1)
-#     im = cv2.imread(path_intensity + en_in[frame_range[v]],-1)
-#     props = pd.read_csv(path_save_properties + en[frame_range[v]])
-#     min_x = props['bbox-1'][cap_view_path[v]-1]
-#     max_x = props['bbox-3'][cap_view_path[v]-1]
-#     min_y = props['bbox-0'][cap_view_path[v]-1]
-#     max_y = props['bbox-2'][cap_view_path[v]-1]
-#     c_im = lab_im
-#     c_im[lab_im != cap_view_path[v]] = 0
-#     c_im[lab_im == cap_view_path[v]] = 255
-#     contours = measure.find_contours(c_im)
+arr_feature_list = np.asarray(features_list)
+
+arr_features = np.concatenate((arr_feature_list,arr_phe_features),axis = 1)
+features = pd.DataFrame(data = arr_features,columns = column_features)
+path_save_features = 'C:\\Belgium test Project\\New Dataset\\features_py\\'
+# path_save_features = 'C:\\Belgium test Project\\New Dataset2\\Features\\'
+features.to_csv(path_save_features + 'features.csv', index=None)
     
-#     phe_area_ecc.append(1 - props['eccentricity'][cap_view_path[v]-1])
-#     phe_mi.append(1 - props['axis_minor_length'][cap_view_path[v]-1])
-#     phe_maj.append(1 - props['axis_major_length'][cap_view_path[v]-1])
-#     phe_area.append(1 - props['area'][cap_view_path[v]-1])
-#     phe_extent.append(1 - props['extent'][cap_view_path[v]-1])
-#     phe_mu_int.append(1 - props['intensity_mean'][cap_view_path[v]-1])
-#     phe_max_int.append(1 - props['intensity_max'][cap_view_path[v]-1])
+    
+# Generate the video from the specific processed events 
+rp = 70
+view_path = rekeep_cons_mito_path[rp]
+pos_view = pos_range[rp]
+path_length = pos_view[1] - pos_view[0] + 1
+frame_range = list(range(pos_view[0],pos_view[1]+1))
+cap_view_path = view_path[view_path != 0]
+phe_area_ecc = []
+phe_mi = []
+phe_maj = []
+phe_area = []
+phe_extent = []
+phe_mu_int = []
+phe_max_int = []
+for v in range(len(cap_view_path)):
+    lab_im = cv2.imread(path_save_lab + en_lab[frame_range[v]], -1)
+    im = cv2.imread(path_intensity + en_in[frame_range[v]],-1)
+    props = pd.read_csv(path_save_properties + en[frame_range[v]])
+    min_x = props['bbox-1'][cap_view_path[v]-1]
+    max_x = props['bbox-3'][cap_view_path[v]-1]
+    min_y = props['bbox-0'][cap_view_path[v]-1]
+    max_y = props['bbox-2'][cap_view_path[v]-1]
+    c_im = lab_im
+    c_im[lab_im != cap_view_path[v]] = 0
+    c_im[lab_im == cap_view_path[v]] = 255
+    contours = measure.find_contours(c_im)
+    
+    phe_area_ecc.append(1 - props['eccentricity'][cap_view_path[v]-1])
+    phe_mi.append(1 - props['axis_minor_length'][cap_view_path[v]-1])
+    phe_maj.append(1 - props['axis_major_length'][cap_view_path[v]-1])
+    phe_area.append(1 - props['area'][cap_view_path[v]-1])
+    phe_extent.append(1 - props['extent'][cap_view_path[v]-1])
+    phe_mu_int.append(1 - props['intensity_mean'][cap_view_path[v]-1])
+    phe_max_int.append(1 - props['intensity_max'][cap_view_path[v]-1])
     
 
     
-#     fig, ax = plt.subplots()
-#     ax.imshow(im, cmap='gray')
+    fig, ax = plt.subplots()
+    ax.imshow(im, cmap='gray')
         
-#     for contour in contours:
-#         ax.plot(contour[:, 1], contour[:, 0], 'r', linewidth=2)
+    for contour in contours:
+        ax.plot(contour[:, 1], contour[:, 0], 'r', linewidth=2)
     
-#     ax.axis('image')
-#     ax.set_xticks([])
-#     ax.set_yticks([])
+    ax.axis('image')
+    ax.set_xticks([])
+    ax.set_yticks([])
     
-#     plt.xlim((min_x - 50,max_x + 50))
-#     plt.ylim((min_y - 50,max_y + 50))
+    plt.xlim((min_x - 50,max_x + 50))
+    plt.ylim((min_y - 50,max_y + 50))
 
-#     plt.show()    
+    plt.show()    
     
     
     

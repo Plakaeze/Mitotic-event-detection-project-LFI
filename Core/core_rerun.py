@@ -25,89 +25,89 @@ path_save_lab = 'C:\\Belgium test Project\\Rerun Dataset\\Mitotic label from py\
 en_ph = os.listdir(path_phase)
 en_in = os.listdir(path_intensity)
 
-# for frames in range(len(en_ph)):
-#     im_in = cv2.imread(path_intensity + en_in[frames], -1)
-#     im_ph = cv2.imread(path_phase + en_ph[frames], -1)
+for frames in range(len(en_ph)):
+    im_in = cv2.imread(path_intensity + en_in[frames], -1)
+    im_ph = cv2.imread(path_phase + en_ph[frames], -1)
     
-#     # plt.figure(1)
-#     # plt.subplot(1,2,1)
-#     # plt.imshow(im_in, cmap = 'gray')
-#     # plt.title('Intensity Image',fontsize = 15)
-#     # plt.subplot(1,2,2)
-#     # plt.imshow(im_ph,cmap = 'gray')
-#     # plt.title('Phase Image',fontsize = 15)
+    # plt.figure(1)
+    # plt.subplot(1,2,1)
+    # plt.imshow(im_in, cmap = 'gray')
+    # plt.title('Intensity Image',fontsize = 15)
+    # plt.subplot(1,2,2)
+    # plt.imshow(im_ph,cmap = 'gray')
+    # plt.title('Phase Image',fontsize = 15)
     
-#     max_in = np.max(im_in)
-#     max_ph = np.max(im_ph)
+    max_in = np.max(im_in)
+    max_ph = np.max(im_ph)
     
-#     # Complementarily thresholding
-#     bw_in = np.zeros(im_in.shape)
-#     bw_in[im_in <= 0.75] = 1 # Difference from core 0.7 --> 0.75
+    # Complementarily thresholding
+    bw_in = np.zeros(im_in.shape)
+    bw_in[im_in <= 0.75] = 1 # Difference from core 0.7 --> 0.75
     
     
-#     bw_ph = np.zeros(im_in.shape)
-#     bw_ph[im_ph <= -1.5] = 1
+    bw_ph = np.zeros(im_in.shape)
+    bw_ph[im_ph <= -1.5] = 1
     
-#     comb = np.logical_or(bw_in,bw_ph)
-#     rem_sm_comb = smh.remove_small_objects(comb,min_size = 21)
-#     label_pre = measure.label(rem_sm_comb)
-#     props = measure.regionprops_table(label_pre,properties=['area'])
-#     area = props['area']
+    comb = np.logical_or(bw_in,bw_ph)
+    rem_sm_comb = smh.remove_small_objects(comb,min_size = 21)
+    label_pre = measure.label(rem_sm_comb)
+    props = measure.regionprops_table(label_pre,properties=['area'])
+    area = props['area']
     
-#     for a in range(len(area)):
-#         sub_a = area[a]
-#         if sub_a > 20000:
-#             label_pre[label_pre == a+1] = 0
+    for a in range(len(area)):
+        sub_a = area[a]
+        if sub_a > 20000:
+            label_pre[label_pre == a+1] = 0
             
-#     pre_pro = label_pre
-#     pre_pro[pre_pro != 0] = 1
-#     fill_pre = ndi.binary_fill_holes(pre_pro).astype(np.uint8)
+    pre_pro = label_pre
+    pre_pro[pre_pro != 0] = 1
+    fill_pre = ndi.binary_fill_holes(pre_pro).astype(np.uint8)
     
         
-#     # plt.figure(2)
-#     # plt.subplot(2,2,1)
-#     # plt.imshow(bw_in)
-#     # plt.title('Binarized intensity image',fontsize = 15)
-#     # plt.subplot(2,2,2)
-#     # plt.imshow(bw_ph)
-#     # plt.title('Binarized phase image',fontsize = 15)
-#     # plt.subplot(2,2,3)
-#     # plt.imshow(comb)
-#     # plt.title('Conbine phase and intensity image',fontsize = 15)
-#     # plt.subplot(2,2,4)
-#     # plt.imshow(fill_pre)
-#     # plt.title('Preprocessed',fontsize = 15)
+    # plt.figure(2)
+    # plt.subplot(2,2,1)
+    # plt.imshow(bw_in)
+    # plt.title('Binarized intensity image',fontsize = 15)
+    # plt.subplot(2,2,2)
+    # plt.imshow(bw_ph)
+    # plt.title('Binarized phase image',fontsize = 15)
+    # plt.subplot(2,2,3)
+    # plt.imshow(comb)
+    # plt.title('Conbine phase and intensity image',fontsize = 15)
+    # plt.subplot(2,2,4)
+    # plt.imshow(fill_pre)
+    # plt.title('Preprocessed',fontsize = 15)
     
-#     kernel = np.ones((3,3),np.uint8)
-#     erosion  = cv2.erode(fill_pre, kernel,iterations = 1)
-#     distance = ndi.distance_transform_edt(erosion)
-#     coords = peak_local_max(distance, footprint=np.ones((3, 3)), labels=erosion, min_distance = 20)
-#     mask = np.zeros(distance.shape, dtype=bool)
-#     mask[tuple(coords.T)] = True
-#     markers, _ = ndi.label(mask)
-#     watershed_tf = watershed(-distance, markers, mask=fill_pre)
+    kernel = np.ones((3,3),np.uint8)
+    erosion  = cv2.erode(fill_pre, kernel,iterations = 1)
+    distance = ndi.distance_transform_edt(erosion)
+    coords = peak_local_max(distance, footprint=np.ones((3, 3)), labels=erosion, min_distance = 20)
+    mask = np.zeros(distance.shape, dtype=bool)
+    mask[tuple(coords.T)] = True
+    markers, _ = ndi.label(mask)
+    watershed_tf = watershed(-distance, markers, mask=fill_pre)
     
-#     fill_pre_for_rgb = fill_pre
-#     fill_pre_for_rgb[fill_pre == 1] = 255
-#     for_preview_local_min = np.dstack([fill_pre_for_rgb,fill_pre_for_rgb,fill_pre_for_rgb])
-#     for_preview_local_min[tuple(coords.T)] = [255,0,0]
+    fill_pre_for_rgb = fill_pre
+    fill_pre_for_rgb[fill_pre == 1] = 255
+    for_preview_local_min = np.dstack([fill_pre_for_rgb,fill_pre_for_rgb,fill_pre_for_rgb])
+    for_preview_local_min[tuple(coords.T)] = [255,0,0]
     
-#     # plt.figure(3)
-#     # plt.subplot(1,3,1)
-#     # plt.imshow(distance)
-#     # plt.title('Distance transform',fontsize = 15)
-#     # plt.subplot(1,3,2)
-#     # plt.imshow(for_preview_local_min)
-#     # plt.title('Local min',fontsize = 15)
-#     # plt.subplot(1,3,3)
-#     # plt.imshow(watershed_tf, cmap='jet')
-#     # plt.title('Watershed',fontsize = 15)
+    # plt.figure(3)
+    # plt.subplot(1,3,1)
+    # plt.imshow(distance)
+    # plt.title('Distance transform',fontsize = 15)
+    # plt.subplot(1,3,2)
+    # plt.imshow(for_preview_local_min)
+    # plt.title('Local min',fontsize = 15)
+    # plt.subplot(1,3,3)
+    # plt.imshow(watershed_tf, cmap='jet')
+    # plt.title('Watershed',fontsize = 15)
     
-#     props = measure.regionprops_table(watershed_tf,im_in,properties = ['label','area',
-#                                                                         'Centroid','axis_major_length',
-#                                                                         'axis_minor_length','eccentricity',
-#                                                                         'bbox','intensity_mean',
-#                                                                         'intensity_max','intensity_min'])
+    props = measure.regionprops_table(watershed_tf,im_in,properties = ['label','area',
+                                                                        'Centroid','axis_major_length',
+                                                                        'axis_minor_length','eccentricity',
+                                                                        'bbox','intensity_mean',
+                                                                        'intensity_max','intensity_min'])
     
     
 #     pd_props = pd.DataFrame(props)
@@ -387,37 +387,35 @@ for rp in range(len(rekeep_cons_mito_path)):
 # Phase image segmentation
 path_phase_props = 'C:\\Belgium test Project\\Rerun Dataset\\Phase properties\\'
 
-# for frames in range(len(en_ph)):
-#     ph_im = cv2.imread(path_phase + en_ph[frames],-1)
-#     thresh = threshold_otsu(ph_im)
-#     bw = np.zeros(ph_im.shape)
-#     bw[ph_im > thresh] = 1
-#     kernel = np.ones((5,5),np.uint8)
-#     opening = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
-#     opening = opening.astype(bool)
-#     filt_bw = smh.remove_small_objects(opening,min_size = 500)
+for frames in range(len(en_ph)):
+    ph_im = cv2.imread(path_phase + en_ph[frames],-1)
+    thresh = threshold_otsu(ph_im)
+    bw = np.zeros(ph_im.shape)
+    bw[ph_im > thresh] = 1
+    kernel = np.ones((5,5),np.uint8)
+    opening = cv2.morphologyEx(bw, cv2.MORPH_OPEN, kernel)
+    opening = opening.astype(bool)
+    filt_bw = smh.remove_small_objects(opening,min_size = 500)
     
-#     lab = measure.label(filt_bw)
-#     props_ph = measure.regionprops_table(lab,ph_im,properties = ['label','area',
-#                                                                         'Centroid','axis_major_length',
-#                                                                         'axis_minor_length','eccentricity',
-#                                                                         'bbox','intensity_mean',
-#                                                                         'intensity_max','intensity_min'])
-#     pd_props_ph = pd.DataFrame(props_ph)
+    lab = measure.label(filt_bw)
+    props_ph = measure.regionprops_table(lab,ph_im,properties = ['label','area',
+                                                                        'Centroid','axis_major_length',
+                                                                        'axis_minor_length','eccentricity',
+                                                                        'bbox','intensity_mean',
+                                                                        'intensity_max','intensity_min'])
+    pd_props_ph = pd.DataFrame(props_ph)
     
-#     if frames < 10:
-#         pre_save = '00'
-#     if frames >= 10 and frames < 100:
-#         pre_save = '0'
-#     if frames >= 100:
-#         pre_save = ''
+    if frames < 10:
+        pre_save = '00'
+    if frames >= 10 and frames < 100:
+        pre_save = '0'
+    if frames >= 100:
+        pre_save = ''
     
-#     pd_props_ph.to_csv(path_phase_props + 'props_ph_' + pre_save + str(frames) + '.csv',index=None)
+    pd_props_ph.to_csv(path_phase_props + 'props_ph_' + pre_save + str(frames) + '.csv',index=None)
 
 
 # Synce position
-
-
 
 np_rekeep_cons_mito_cls = np.asanyarray(rekeep_cons_mito_cls)
 np_rekeep_cons_mito_cls[np_rekeep_cons_mito_cls == 0] = np.Inf
@@ -662,6 +660,7 @@ for r in range(len(paired_position)):
     temp_features_frame = pd.DataFrame(data = [features_list],columns = column_features)
     features = pd.concat([features,temp_features_frame], ignore_index=True)
 
+# Save features to the target path. You can change the path_save_features parameter to the target path
 path_save_features = 'C:\\Belgium test Project\\Rerun Dataset\\Features\\'
 features.to_csv(path_save_features + 'features.csv', index=None)
     
